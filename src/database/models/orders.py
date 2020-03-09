@@ -1,33 +1,103 @@
-from enum import Enum, IntEnum
+from enum import Enum
 from typing import Dict
 
-from sqlalchemy import Column, Enum as EnumSqlAlchemy, Time, DECIMAL
+from sqlalchemy import (
+    Column,
+    Enum as EnumSqlAlchemy,
+    Time,
+    DECIMAL,
+    Integer,
+    String,
+    ForeignKey,
+)
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.orm import relationship
 
 from database.models.base import BaseModel
 
 
 class OrderStage(str, Enum):
     choice = "choice"
-    personalization = "personalization"
+    customization = "customization"
     done = "done"
 
 
-class OrderSize(IntEnum):
-    small = 1
-    medium = 2
-    big = 3
+class Size(BaseModel):
+    __tablename__ = "sizes"
+
+    code = Column(Integer, nullable=False, unique=True)
+    name = Column(String, nullable=False)
+    amount = Column(DECIMAL, nullable=False)
+    setup_time = Column(Time, nullable=False)
+
+    def to_dict(self) -> Dict:
+        return {
+            "id": self.id,
+            "created_at": self.created_at,
+            "updated_at": self.updated_at,
+            "code": self.code,
+            "name": self.name,
+            "amount": self.amount,
+            "setup_time": self.setup_time,
+        }
 
 
-class OrderFlavor(IntEnum):
-    strawberry = 1
-    banana = 2
-    kiwi = 3
+class Flavor(BaseModel):
+    __tablename__ = "flavors"
+
+    code = Column(Integer, nullable=False, unique=True)
+    name = Column(String, nullable=False)
+    setup_time = Column(Time, nullable=False)
+
+    def to_dict(self) -> Dict:
+        return {
+            "id": self.id,
+            "created_at": self.created_at,
+            "updated_at": self.updated_at,
+            "code": self.code,
+            "name": self.name,
+            "setup_time": self.setup_time,
+        }
 
 
-class OrderPersonalization(IntEnum):
-    granola = 1
-    peanut_candy = 2
-    ninho_milk = 3
+class Customization(BaseModel):
+    __tablename__ = "customizations"
+
+    code = Column(Integer, nullable=False, unique=True)
+    name = Column(String, nullable=False)
+    amount = Column(DECIMAL, nullable=False)
+    setup_time = Column(Time, nullable=False)
+
+    def to_dict(self) -> Dict:
+        return {
+            "id": self.id,
+            "created_at": self.created_at,
+            "updated_at": self.updated_at,
+            "code": self.code,
+            "name": self.name,
+            "amount": self.amount,
+            "setup_time": self.setup_time,
+        }
+
+
+class OrderCustomization(BaseModel):
+    __tablename__ = "order_customization"
+
+    order_id = Column(ForeignKey("orders.id"), primary_key=True)
+    customization_id = Column(ForeignKey("customizations.id"), primary_key=True)
+    order = relationship("Order", foreign_keys="OrderCustomization.order_id")
+    customization = relationship(
+        "Customization", foreign_keys="OrderCustomization.customization_id"
+    )
+
+    def to_dict(self) -> Dict:
+        return {
+            "id": self.id,
+            "created_at": self.created_at,
+            "updated_at": self.updated_at,
+            "order_id": self.order_id,
+            "customization_id": self.customization_id,
+        }
 
 
 class Order(BaseModel):
@@ -36,9 +106,12 @@ class Order(BaseModel):
     stage = Column(
         EnumSqlAlchemy(OrderStage), nullable=False, default=OrderStage.choice,
     )
-    size = Column(EnumSqlAlchemy(OrderSize), nullable=False,)
-    flavor = Column(EnumSqlAlchemy(OrderFlavor), nullable=False,)
-    personalization = Column(EnumSqlAlchemy(OrderPersonalization), nullable=True,)
+    size_id = Column(ForeignKey("sizes.id"), nullable=False)
+    size = relationship("Size", foreign_keys="Order.size_id")
+    flavor_id = Column(ForeignKey("flavors.id"), nullable=False)
+    flavor = relationship("Flavor", foreign_keys="Order.flavor_id")
+    customizations = relationship("OrderCustomization", back_populates="order")
+
     setup_time = Column(Time, nullable=False)
     amount = Column(DECIMAL, nullable=False)
 
@@ -48,9 +121,11 @@ class Order(BaseModel):
             "created_at": self.created_at,
             "updated_at": self.updated_at,
             "stage": self.stage,
-            "size": self.size,
-            "flavor": self.flavor,
-            "personalization": self.personalization,
+            "size_id": self.size_id,
+            "flavor_id": self.flavor_id,
+            "customizations": [
+                c.to_dict() for c in self.customizations if self.customizations
+            ],
             "setup_time": self.setup_time,
             "amount": self.amount,
         }

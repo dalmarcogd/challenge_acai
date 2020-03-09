@@ -31,7 +31,7 @@ RUN apt-get remove --purge -y \
 
 ADD . .
 
-EXPOSE 8000
+EXPOSE 80
 
-ENTRYPOINT ["gunicorn", "src.app:app", "-c ./src/gunicorn.py"]
+ENTRYPOINT ["uvicorn", "--workers=1", "--host 0.0.0.0", "--port 80",  "src.app:app"]
 
