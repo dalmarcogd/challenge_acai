@@ -1,0 +1,66 @@
+version: '3.7'
+
+networks:
+  weather:
+
+volumes:
+  postgres_data:
+    driver: local
+
+services:
+  postgres:
+    container_name: postgres_weather_forecast
+    image: postgres:latest
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgreSQL
+    environment:
+      POSTGRES_ROOT_PASSWORD: postgres
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - weather
+
+  redis:
+    container_name: redis_weather_forecast
+    image: redis
+    ports:
+      - "6380:6379"
+    depends_on:
+      - postgres
+    networks:
+      - weather
+
+  weather-forecast-api:
+    image: weather_forecast_api
+    build:
+      context: ./weather-forecast-api
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    env_file:
+      - weather-forecast-api/.env.test
+    depends_on:
+      - redis
+      - postgres
+    networks:
+      - weather
+
+  integration-open-weather:
+    image: integration_open_weather
+    build:
+      context: ./integration-open-weather-background
+      dockerfile: Dockerfile
+    env_file:
+      - integration-open-weather-background/.env.test
+    networks:
+      - weather
+    depends_on:
+      - redis
