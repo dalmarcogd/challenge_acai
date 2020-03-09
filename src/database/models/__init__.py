@@ -1,4 +1,7 @@
-from weather_forecast.database.models.base import DeclarativeModel
-from weather_forecast.database.models.weather_forecast import WeatherForecast, WeatherForecastStatus
+from database.models.base import DeclarativeModel
+from database.models.orders import Order
 
-__all__ = ("DeclarativeModel", "WeatherForecast", "WeatherForecastStatus")
+__all__ = (
+    "DeclarativeModel",
+    "Order",
+)

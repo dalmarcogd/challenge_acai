@@ -24,14 +24,8 @@ async def post(order: OrderInput):
 
 
 @orders_router.get(
-    "/orders/{order_id}",
-    response_model=OrderOutput,
-    response_class=UJSONResponse,
+    "/orders/{order_id}", response_model=OrderOutput, response_class=UJSONResponse,
 )
 async def get(order_id: UUID):
     order = queries.get_order(order_id)
-    return {
-        "id": weather_forecast["id"],
-        "status": weather_forecast["status"],
-        "result": ujson.loads(weather_forecast["result"]) if weather_forecast["result"] else None,
-    }
+    return {}

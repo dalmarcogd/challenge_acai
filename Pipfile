@@ -3,20 +3,16 @@ name = "pypi"
 url = "https://pypi.org/simple"
 verify_ssl = true
 
-
 [packages]
-celery = "*"
-gevent = "*"
 fastapi = "*"
-gunicorn = "*"
 pydantic = "*"
-kombu = "<4.6.4"
 uvicorn = "*"
+gunicorn = "*"
 psycopg2-binary = "*"
 SQLAlchemy = "*"
 alembic = "*"
 python-decouple = "*"
-ujson = "*"
+#ujson = "*"
 redis = "*"
 email-validator = "*"
 
