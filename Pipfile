@@ -12,7 +12,6 @@ psycopg2-binary = "*"
 SQLAlchemy = "*"
 alembic = "*"
 python-decouple = "*"
-ujson = "*"
 redis = "*"
 email-validator = "*"
 

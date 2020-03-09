@@ -27,6 +27,11 @@ class OrderCustomization(int, Enum):
     ninho_milk = 3
 
 
+class OrderCustomizationOutput(BaseModel):
+    custom: OrderCustomization
+    amount: Decimal
+
+
 class OrderInput(BaseModel):
     size: OrderSize
     flavor: OrderFlavor
@@ -36,7 +41,7 @@ class OrderOutput(BaseModel):
     id: UUID
     size: OrderSize
     flavor: OrderFlavor
-    customizations: Optional[List[OrderCustomization]]
+    customizations: Optional[List[OrderCustomizationOutput]]
     stage: OrderStage
     setup_time: time
     amount: Decimal

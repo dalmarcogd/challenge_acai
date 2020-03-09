@@ -22,9 +22,9 @@ def calculate_time(
     ).time()
     if customizations:
         for c in customizations:
-            setup_time = datetime.combine(date.min, setup_time) + timedelta(
+            setup_time = (datetime.combine(date.min, setup_time) + timedelta(
                 hours=c["setup_time"].hour,
                 minutes=c["setup_time"].minute,
                 seconds=c["setup_time"].second,
-            )
+            )).time()
     return setup_time

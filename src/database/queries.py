@@ -55,6 +55,7 @@ def update_order(order_id: UUID, order: Dict) -> Dict:
             )
         size = get_size_by_id(order_update_dict["size_id"])
         flavor = get_flavor_by_id(order_update_dict["flavor_id"])
+        order_update = Query(Order, session=session).filter_by(id=order_id).first()
         order_update.setup_time = utils.calculate_time(size, flavor, customizations)
         order_update.amount = utils.calculate_amount(size, customizations)
         session.commit()
