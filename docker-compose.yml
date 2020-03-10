@@ -28,16 +28,6 @@ services:
     networks:
       - acai
 
-  redis:
-    container_name: redis_acai
-    image: redis
-    ports:
-      - "6380:6379"
-    depends_on:
-      - postgres
-    networks:
-      - acai
-
   acai-api:
     image: acai_api
     build: .
@@ -46,7 +36,6 @@ services:
     env_file:
       - .env.test
     depends_on:
-      - redis
       - postgres
     networks:
       - acai

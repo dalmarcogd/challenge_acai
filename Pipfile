@@ -7,12 +7,10 @@ verify_ssl = true
 fastapi = "*"
 pydantic = "*"
 uvicorn = "*"
-gunicorn = "*"
 psycopg2-binary = "*"
 SQLAlchemy = "*"
 alembic = "*"
 python-decouple = "*"
-redis = "*"
 email-validator = "*"
 
 [requires]
