@@ -10,10 +10,9 @@ from sqlalchemy import (
     String,
     ForeignKey,
 )
-from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 
-from database.models.base import BaseModel
+from src.database.models.base import BaseModel
 
 
 class OrderStage(str, Enum):

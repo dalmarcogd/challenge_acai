@@ -15,7 +15,7 @@ Principais tecnologias utilizadas:
 $ git clone https://github.com/dalmarcogd/challenge_acai.git
 $ cd challenge_acai
 $ docker-compose up
-$ open http://localhost:8000/acai-api/docs
+$ open http://localhost/acai-api/docs
 ```
 
 ### Teste

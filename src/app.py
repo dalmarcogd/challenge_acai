@@ -1,9 +1,9 @@
 from fastapi import FastAPI, Request
 from starlette.responses import UJSONResponse
 
-from exceptions.orders import OrderNotFoundException
-from handlers.orders import orders_router
-from settings import BASE_PATH
+from src.exceptions.orders import OrderNotFoundException
+from src.handlers.orders import orders_router
+from src.settings import BASE_PATH
 from src import __version__
 
 app = FastAPI(

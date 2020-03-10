@@ -4,8 +4,8 @@ from fastapi import APIRouter
 from starlette.responses import JSONResponse
 from starlette.status import HTTP_201_CREATED
 
-from database import queries
-from schemas.orders import OrderInput, OrderOutput, OrderCustomizationInput
+from src.database import queries
+from src.schemas.orders import OrderInput, OrderOutput, OrderCustomizationInput
 
 orders_router = APIRouter()
 

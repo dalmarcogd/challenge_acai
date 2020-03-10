@@ -10,5 +10,5 @@ ADD . .
 
 EXPOSE 80
 
-ENTRYPOINT ["uvicorn", "--workers=1", "--host 0.0.0.0", "--port 80",  "src.app:app"]
+ENTRYPOINT uvicorn --workers=1 --host 0.0.0.0 --port 80 src.app:app
 

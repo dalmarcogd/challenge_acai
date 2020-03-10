@@ -6,7 +6,7 @@ from uuid import UUID
 
 from pydantic import BaseModel
 
-from database.models.orders import OrderStage
+from src.database.models.orders import OrderStage
 
 
 class OrderFlavor(int, Enum):
